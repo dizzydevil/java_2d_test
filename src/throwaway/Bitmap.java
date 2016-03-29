@@ -22,66 +22,37 @@ public class Bitmap {
     }
 
     public void render(Bitmap src, int srcx, int srcy, int srcw, int srch, int dstx, int dsty, boolean hflip, boolean vflip) {
-	if (srcx < 0) {
-	    srcw += srcx;
-	    dstx += srcx;
-	    srcx = 0;
+	int sx1, sy1;
+	int sx2, sy2;
+
+	if (hflip) {
+	    sx1 = srcx + srcw - 1;
+	    sx2 = srcx;
+	} else {
+	    sx1 = srcx;
+	    sx2 = srcx + srcw - 1;
 	}
 
-	if (srcx + srcw >= src.width) {
-	    srcw = src.width - srcx;
+	if (vflip) {
+	    sy1 = srcy + srch - 1;
+	    sy2 = srcy;
+	} else {
+	    sy1 = srcy;
+	    sy2 = srcy + srch - 1;
 	}
 
-	if (srcy < 0) {
-	    srch += srcy;
-	    dsty += srcy;
-	    srcy = 0;
-	}
+	int dx = sx1 < sx2 ? 1 : (sx1 > sx2 ? -1 : 0);
+	int dy = sy1 < sy2 ? 1 : (sy1 > sy2 ? -1 : 0);
 
-	if (srcy + srch >= src.height) {
-	    srch = src.height - srcy;
-	}
+	System.out.println("sx1: " + sx1 + " sx2: " + sx2 + " sy1: " + sy1 + " sy2: " + sy2 + " dstx: " + dstx + " dsty: " + dsty);
 
-	if (dstx < 0) {
-	    if (!hflip) {
-		srcx -= dstx;
-	    }
-	    srcw += dstx;
-	    dstx = 0;
-	}
-
-	if (dstx + srcw >= width) {
-	    if (hflip) {
-		srcx += dstx + srcw - width;
-	    }
-	    srcw = width - dstx - 1;
-	}
-
-	if (dsty < 0) {
-	    if (!vflip) {
-		srcy -= dsty;
-	    }
-	    srch += dsty;
-	    dsty = 0;
-	}
-
-	if (dsty + srch >= height) {
-	    if (vflip) {
-		srcy += dsty + srch - height;
-	    }
-	    srch = height - dsty - 1;
-	}
-
-	// DEBUG //
-	System.out.println("srcx: " + srcx + " srcy: " + srcy + " srcw: " + srcw + " srch: " + srch + " dstx: " + dstx + " dsty: " + dsty + " width: " + width + " height: " + height);
-
-	if (srcw <= 0 || srch <= 0) {
-	    return;
-	}
-	
-	for (int y = 0; y < srch; y++) {
-	    for (int x = 0; x < srcw; x++) {
-		int index = dstx + (hflip ? srcw - x -1 : x) + (dsty + (vflip ? srch - y - 1 : y)) * width;
+	int y = dsty;
+	int sy = sy1;
+	do {
+	    int x = dstx;
+	    int sx = sx1;
+	    do {
+		int index = x + y * width;
 
 		int oldPixel = pixels[index];
 
@@ -89,7 +60,7 @@ public class Bitmap {
 		int og = (oldPixel >> 8) & 0xFF;
 		int ob = oldPixel & 0xFF;
 
-		int newPixel = src.pixels[srcx + x + (srcy + y) * src.width];
+		int newPixel = src.pixels[sx + sy * src.width];
 
 		int alpha = (newPixel >> 24) & 0xFF;
 
@@ -102,7 +73,39 @@ public class Bitmap {
 		int b = ((ob * (255-alpha) + nb * alpha) / 255) & 0xFF;
 		
 		pixels[index] = (r << 16) | (g << 8) | b;
-	    }
-	}
+
+		sx += dx;
+		x++;
+	    } while (sx != sx2);
+
+	    sy += dy;
+	    y++;
+	} while (sy != sy2);
+	
+	// for (int y = 0; y < srch; y++) {
+	//     for (int x = 0; x < srcw; x++) {
+	// 	int index = dstx + (hflip ? srcw - x -1 : x) + (dsty + (vflip ? srch - y - 1 : y)) * width;
+
+	// 	int oldPixel = pixels[index];
+
+	// 	int or = (oldPixel >> 16) & 0xFF;
+	// 	int og = (oldPixel >> 8) & 0xFF;
+	// 	int ob = oldPixel & 0xFF;
+
+	// 	int newPixel = src.pixels[srcx + x + (srcy + y) * src.width];
+
+	// 	int alpha = (newPixel >> 24) & 0xFF;
+
+	// 	int nr = (newPixel >> 16) & 0xFF;
+	// 	int ng = (newPixel >> 8) & 0xFF;
+	// 	int nb = newPixel & 0xFF;
+
+	// 	int r = ((or * (255-alpha) + nr * alpha) / 255) & 0xFF;
+	// 	int g = ((og * (255-alpha) + ng * alpha) / 255) & 0xFF;
+	// 	int b = ((ob * (255-alpha) + nb * alpha) / 255) & 0xFF;
+		
+	// 	pixels[index] = (r << 16) | (g << 8) | b;
+	//     }
+	// }
     }
 }

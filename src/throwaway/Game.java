@@ -113,7 +113,8 @@ public class Game extends Canvas {
 
 	// clear to white
 	for (int i = 0; i < pixels.length; i++) {
-	    pixels[i] = ticks + i;
+	    //pixels[i] = ticks + i;
+	    pixels[i] = 0xEEEEEE;
 	}
 	sprites.renderSprite(screen, 0, 0, 1, 1, debugx, debugy, false, false);
 
