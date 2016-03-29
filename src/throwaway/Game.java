@@ -27,7 +27,9 @@ public class Game extends Canvas {
     private int[] pixels;
 
     private SpriteSheet sprites;
-
+    private TileSheet tiles;
+    private Level level;
+    
     private InputHandler inputHandler;
     
     public Game() {
@@ -36,7 +38,10 @@ public class Game extends Canvas {
 	this.screen = new Bitmap(pixels, WIDTH, HEIGHT);
 
 	this.sprites = new SpriteSheet("sprites", 16);
-
+    this.tiles = new TileSheet("tiles");
+    this.tiles.setupTiles(2, 2, 16, 16, 8, 4);
+    this.level = new Level(this.tiles);
+    
 	this.inputHandler = new InputHandler(this);
     }
 
@@ -117,6 +122,7 @@ public class Game extends Canvas {
 	    pixels[i] = 0x866f51;
 	}
 	sprites.renderSprite(screen, 1, 0, 1, 1, debugx, debugy, false, false);
+	level.render(screen);
 
 	g.drawImage(image, 0, 0, ZOOM * WIDTH, ZOOM * HEIGHT, null);
 	g.dispose();
