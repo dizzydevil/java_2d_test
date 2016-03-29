@@ -28,12 +28,16 @@ public class Game extends Canvas {
 
     private SpriteSheet sprites;
 
+    private InputHandler inputHandler;
+    
     public Game() {
 	this.image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	this.pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	this.screen = new Bitmap(pixels, WIDTH, HEIGHT);
 
 	this.sprites = new SpriteSheet("sprites", 16);
+
+	this.inputHandler = new InputHandler(this);
     }
 
     public Dimension getPreferredSize() {
@@ -81,8 +85,16 @@ public class Game extends Canvas {
 	}
     }
 
+    int debugx = WIDTH / 2 - 8;
+    int debugy = HEIGHT / 2 - 8;
+
     private void handleInput() {
-	// later!
+	inputHandler.tick();
+
+	if (inputHandler.down) debugy++;
+	if (inputHandler.up) debugy--;
+	if (inputHandler.left) debugx--;
+	if (inputHandler.right) debugx++;
     }
 
     private void tick() {
@@ -103,9 +115,7 @@ public class Game extends Canvas {
 	    pixels[i] = ticks + i;
 	}
 	double angle = ticks * Math.PI / 300.0;
-	int x = (int) (WIDTH / 2 + 100 * Math.cos(angle));
-	int y = (int) (HEIGHT / 2 + 50 * Math.sin(angle));
-	sprites.renderSprite(0, 0, 1, 1, x, y, screen);
+	sprites.renderSprite(0, 0, 1, 1, debugx, debugy, screen);
 
 	g.drawImage(image, 0, 0, ZOOM * WIDTH, ZOOM * HEIGHT, null);
 	g.dispose();
