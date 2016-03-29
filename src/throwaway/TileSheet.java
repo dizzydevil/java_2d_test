@@ -74,9 +74,9 @@ public class TileSheet {
             ySize[i] = tileSizeY;
             
             x = x + tileSizeX;
-            y = y + tileSizeY;
-            if (i % numTilesRow == 0 ){
+            if ((i+1) % numTilesRow == 0 ){
                 x = 0;
+                y = y + tileSizeY;
             }
         }
     }

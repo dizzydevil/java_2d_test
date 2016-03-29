@@ -42,19 +42,36 @@ import java.awt.Dimension;
 public class Level {
     private TileSheet tiles;
     
-    public static final int TILE_WALL = 0;
-    public static final int TILE_FLOOR = 1;
+    /*
+    tiles.png: 128x128
+    
+    0,0 0 black
+    0,1 1 red
+    1,0 8 grey wall
+    2,0 16 brown tiles
+    2,1 17 black
+    2,2 18 brown wall
+    */
+    public static final int TILE_FLOOR_BLACK = 0;
+    public static final int TILE_FLOOR_BROWN = 16;
+    public static final int TILE_FLOOR_RED = 1;
+    public static final int TILE_WALL_GREY = 8;
+    public static final int TILE_WALL_BROWN = 18;
     
     public static final int[][] testlevel = {
-        {TILE_WALL, TILE_WALL,  TILE_WALL,  TILE_WALL},
-        {TILE_WALL, TILE_FLOOR, TILE_FLOOR, TILE_WALL},
-        {TILE_WALL, TILE_FLOOR, TILE_FLOOR, TILE_WALL},
-        {TILE_WALL, TILE_WALL,  TILE_WALL,  TILE_WALL},
+        {TILE_WALL_GREY, TILE_WALL_GREY,   TILE_WALL_GREY,   TILE_WALL_GREY},
+        {TILE_WALL_GREY, TILE_FLOOR_BROWN, TILE_FLOOR_BROWN, TILE_WALL_GREY},
+        {TILE_WALL_GREY, TILE_FLOOR_BROWN, TILE_FLOOR_BROWN, TILE_WALL_GREY},
+        {TILE_WALL_GREY, TILE_WALL_GREY,   TILE_WALL_GREY,   TILE_WALL_GREY},
+        {TILE_FLOOR_RED, TILE_FLOOR_RED,   TILE_FLOOR_RED,   TILE_FLOOR_RED},
+        {TILE_FLOOR_RED, TILE_FLOOR_BROWN, TILE_FLOOR_BROWN, TILE_FLOOR_RED},
+        {TILE_FLOOR_RED, TILE_FLOOR_BROWN, TILE_FLOOR_BROWN, TILE_FLOOR_RED},
+        {TILE_FLOOR_RED, TILE_FLOOR_RED,   TILE_FLOOR_RED,   TILE_FLOOR_RED},
     };
     
     /* level dimensions */
     private int numCellsX = 4;
-    private int numCellsY = 4;
+    private int numCellsY = 8;
     
     
     /* 
@@ -77,7 +94,7 @@ public class Level {
         int cellDisplacementY = 4;
                 
         /* initial pixel coordinate of a cell row */
-        int xRow = numCellsX*cellDisplacementX;
+        int xRow = numCellsY*cellDisplacementX;
         int yRow = 0;
         
         /* pixel coordinates of a cell */
