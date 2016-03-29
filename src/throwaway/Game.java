@@ -114,9 +114,9 @@ public class Game extends Canvas {
 	// clear to white
 	for (int i = 0; i < pixels.length; i++) {
 	    //pixels[i] = ticks + i;
-	    pixels[i] = 0xEEEEEE;
+	    pixels[i] = 0x866f51;
 	}
-	sprites.renderSprite(screen, 0, 0, 1, 1, debugx, debugy, false, false);
+	sprites.renderSprite(screen, 1, 0, 1, 1, debugx, debugy, false, false);
 
 	g.drawImage(image, 0, 0, ZOOM * WIDTH, ZOOM * HEIGHT, null);
 	g.dispose();

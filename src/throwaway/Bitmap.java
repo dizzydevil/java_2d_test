@@ -41,17 +41,43 @@ public class Bitmap {
 	    sy2 = srcy + srch - 1;
 	}
 
+	sx1 = Math.max(sx1, 0);
+	sx2 = Math.min(sx2, src.width - 1);
+	sy1 = Math.max(sy1, 0);
+	sy2 = Math.min(sy2, src.height - 1);
+
+	if (dstx < 0) {
+	    sx1 -= dstx;
+	    dstx = 0;
+	}
+
+	if (dstx + (sx2 - sx1 + 1) >= width) {
+	    sx2 -= dstx + (sx2 - sx1 + 1) - width - 1;
+	}
+
+	if (dsty < 0) {
+	    sy1 -= dsty;
+	    dsty = 0;
+	}
+
+	if (dsty + (sy2 - sy1 + 1) >= height) {
+	    sy2 -= dsty + (sy2 - sy1 + 1) - height - 1;
+	}
+
 	int dx = sx1 < sx2 ? 1 : (sx1 > sx2 ? -1 : 0);
 	int dy = sy1 < sy2 ? 1 : (sy1 > sy2 ? -1 : 0);
 
-	System.out.println("sx1: " + sx1 + " sx2: " + sx2 + " sy1: " + sy1 + " sy2: " + sy2 + " dstx: " + dstx + " dsty: " + dsty);
-
 	int y = dsty;
-	int sy = sy1;
+	int sy = sy1 - dy;
 	do {
+	    sy += dy;
+
 	    int x = dstx;
-	    int sx = sx1;
+	    int sx = sx1 - dx;
+
 	    do {
+		sx += dx;
+		
 		int index = x + y * width;
 
 		int oldPixel = pixels[index];
@@ -74,11 +100,9 @@ public class Bitmap {
 		
 		pixels[index] = (r << 16) | (g << 8) | b;
 
-		sx += dx;
 		x++;
 	    } while (sx != sx2);
 
-	    sy += dy;
 	    y++;
 	} while (sy != sy2);
 	
