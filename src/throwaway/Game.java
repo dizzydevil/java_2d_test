@@ -19,6 +19,7 @@ public class Game extends Canvas {
     private static final int WIDTH = 320;
     private static final int HEIGHT = 200;
     private static final int ZOOM = 3;
+    private static final int FRAMES_PER_SECOND = 60;
 
     private int ticks;
     private BufferedImage image;
@@ -45,10 +46,29 @@ public class Game extends Canvas {
 	long time = System.currentTimeMillis();
 	long nextPrint = time + 1000;
 
+	long nanosPerFrame = 1000000000 / FRAMES_PER_SECOND;
+	long nextTick = System.nanoTime() + nanosPerFrame;
+	
 	int fps = 0;
 	while (true) {
+	    handleInput();
 	    tick();
 	    render();
+
+	    long sleepNanos = nextTick - System.nanoTime();
+
+	    while (sleepNanos > 0) {
+		long sleepMillis = sleepNanos / 1000000;
+		int sleepRest = (int) (sleepNanos - 1000000 * sleepMillis);
+
+		try {
+		    Thread.sleep(sleepMillis, sleepRest);
+		} catch (InterruptedException ignore) {
+		    /* empty */
+		}
+
+		sleepNanos = nextTick - System.nanoTime();
+	    }
 
 	    fps++;
 	    if (System.currentTimeMillis() > nextPrint) {
@@ -57,12 +77,12 @@ public class Game extends Canvas {
 		nextPrint += 1000;
 	    }
 
-	    try {
-		Thread.sleep(2);		
-	    } catch (InterruptedException ignore) {
-		/* empty */
-	    }
+	    nextTick += nanosPerFrame;
 	}
+    }
+
+    private void handleInput() {
+	// later!
     }
 
     private void tick() {
