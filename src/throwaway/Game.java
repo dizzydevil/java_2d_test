@@ -105,6 +105,7 @@ public class Game extends Canvas {
 	BufferStrategy bs = getBufferStrategy();
 	if (bs == null) {
 	    createBufferStrategy(2);
+	    requestFocus();
 	    return;
 	}
 
@@ -114,8 +115,7 @@ public class Game extends Canvas {
 	for (int i = 0; i < pixels.length; i++) {
 	    pixels[i] = ticks + i;
 	}
-	double angle = ticks * Math.PI / 300.0;
-	sprites.renderSprite(0, 0, 1, 1, debugx, debugy, screen);
+	sprites.renderSprite(screen, 0, 0, 1, 1, debugx, debugy, (ticks / 60) % 2 == 0, (ticks / 120) % 2 == 0);
 
 	g.drawImage(image, 0, 0, ZOOM * WIDTH, ZOOM * HEIGHT, null);
 	g.dispose();

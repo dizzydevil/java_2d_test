@@ -18,9 +18,33 @@ public class Bitmap {
     }
 
     public void render(Bitmap src, int srcx, int srcy, int srcw, int srch, int dstx, int dsty) {
+	render(src, srcx, srcy, srcw, srch, dstx, dsty, false, false);
+    }
+
+    public void render(Bitmap src, int srcx, int srcy, int srcw, int srch, int dstx, int dsty, boolean hflip, boolean vflip) {
+	if (srcx < 0) {
+	    srcw += srcx;
+	    srcx = 0;
+	}
+
+	if (srcx >= width) {
+	    srcw -= srcx - width + 1;
+	    srcx = width - 1;
+	}
+
+	if (srcy < 0) {
+	    srch += srcy;
+	    srcy = 0;
+	}
+
+	if (srcy >= height) {
+	    srch -= srcy - height + 1;
+	    srcy = height - 1;
+	}
+
 	for (int y = 0; y < srch; y++) {
 	    for (int x = 0; x < srcw; x++) {
-		int index = dstx + x + (dsty + y) * width;
+		int index = dstx + (hflip ? srcw - x - 1 : x) + (dsty + (vflip ? srch - y - 1 : y)) * width;
 
 		int oldPixel = pixels[index];
 

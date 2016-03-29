@@ -43,9 +43,16 @@ public class SpriteSheet {
 	this.spriteSheet = new Bitmap(pixels, width, height);
     }
 
-    public void renderSprite(int spritex, int spritey, int spriteWidth, int spriteHeight, int x, int y, Bitmap destination) {
+    public void renderSprite(Bitmap destination, int spritex, int spritey, int spriteWidth, int spriteHeight, int x, int y) {
+	renderSprite(spriteSheet,
+		     spritex * spriteSize, spritey * spriteSize, spriteWidth * spriteSize, spriteHeight * spriteSize,
+		     x, y, false, false);
+    }
+
+    public void renderSprite(Bitmap destination, int spritex, int spritey, int spriteWidth, int spriteHeight, int x, int y,
+			     boolean hflip, boolean vflip) {
 	destination.render(spriteSheet,
 			   spritex * spriteSize, spritey * spriteSize, spriteWidth * spriteSize, spriteHeight * spriteSize,
-			   x, y);
+			   x, y, hflip, vflip);
     }
 }
