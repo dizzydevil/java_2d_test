@@ -31,6 +31,7 @@ public class Bitmap {
 		int newPixel = src.pixels[srcx + x + (srcy + y) * src.width];
 
 		int alpha = (newPixel >> 24) & 0xFF;
+
 		int nr = (newPixel >> 16) & 0xFF;
 		int ng = (newPixel >> 8) & 0xFF;
 		int nb = newPixel & 0xFF;
@@ -39,7 +40,7 @@ public class Bitmap {
 		int g = ((og * (255-alpha) + ng * alpha) / 255) & 0xFF;
 		int b = ((ob * (255-alpha) + nb * alpha) / 255) & 0xFF;
 		
-		pixels[index] = (r << 24) | (b << 16) | b;
+		pixels[index] = (r << 16) | (g << 8) | b;
 	    }
 	}
     }

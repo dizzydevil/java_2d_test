@@ -78,11 +78,14 @@ public class Game extends Canvas {
 
 	Graphics g = bs.getDrawGraphics();
 
-	// DEBUG //
+	// clear to white
 	for (int i = 0; i < pixels.length; i++) {
 	    pixels[i] = ticks + i;
 	}
-	sprites.renderSprite(0, 0, 1, 1, 100, 100, screen);
+	double angle = ticks * Math.PI / 300.0;
+	int x = (int) (WIDTH / 2 + 100 * Math.cos(angle));
+	int y = (int) (HEIGHT / 2 + 50 * Math.sin(angle));
+	sprites.renderSprite(0, 0, 1, 1, x, y, screen);
 
 	g.drawImage(image, 0, 0, ZOOM * WIDTH, ZOOM * HEIGHT, null);
 	g.dispose();
