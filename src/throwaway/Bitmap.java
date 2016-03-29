@@ -24,27 +24,64 @@ public class Bitmap {
     public void render(Bitmap src, int srcx, int srcy, int srcw, int srch, int dstx, int dsty, boolean hflip, boolean vflip) {
 	if (srcx < 0) {
 	    srcw += srcx;
+	    dstx += srcx;
 	    srcx = 0;
 	}
 
-	if (srcx >= width) {
-	    srcw -= srcx - width + 1;
-	    srcx = width - 1;
+	if (srcx + srcw >= src.width) {
+	    srcw = src.width - srcx;
 	}
 
 	if (srcy < 0) {
 	    srch += srcy;
+	    dsty += srcy;
 	    srcy = 0;
 	}
 
-	if (srcy >= height) {
-	    srch -= srcy - height + 1;
-	    srcy = height - 1;
+	if (srcy + srch >= src.height) {
+	    srch = src.height - srcy;
 	}
 
+	if (dstx < 0) {
+	    if (!hflip) {
+		srcx -= dstx;
+	    }
+	    srcw += dstx;
+	    dstx = 0;
+	}
+
+	if (dstx + srcw >= width) {
+	    if (hflip) {
+		srcx += dstx + srcw - width;
+	    }
+	    srcw = width - dstx - 1;
+	}
+
+	if (dsty < 0) {
+	    if (!vflip) {
+		srcy -= dsty;
+	    }
+	    srch += dsty;
+	    dsty = 0;
+	}
+
+	if (dsty + srch >= height) {
+	    if (vflip) {
+		srcy += dsty + srch - height;
+	    }
+	    srch = height - dsty - 1;
+	}
+
+	// DEBUG //
+	System.out.println("srcx: " + srcx + " srcy: " + srcy + " srcw: " + srcw + " srch: " + srch + " dstx: " + dstx + " dsty: " + dsty + " width: " + width + " height: " + height);
+
+	if (srcw <= 0 || srch <= 0) {
+	    return;
+	}
+	
 	for (int y = 0; y < srch; y++) {
 	    for (int x = 0; x < srcw; x++) {
-		int index = dstx + (hflip ? srcw - x - 1 : x) + (dsty + (vflip ? srch - y - 1 : y)) * width;
+		int index = dstx + (hflip ? srcw - x -1 : x) + (dsty + (vflip ? srch - y - 1 : y)) * width;
 
 		int oldPixel = pixels[index];
 

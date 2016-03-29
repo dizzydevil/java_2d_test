@@ -44,9 +44,7 @@ public class SpriteSheet {
     }
 
     public void renderSprite(Bitmap destination, int spritex, int spritey, int spriteWidth, int spriteHeight, int x, int y) {
-	renderSprite(spriteSheet,
-		     spritex * spriteSize, spritey * spriteSize, spriteWidth * spriteSize, spriteHeight * spriteSize,
-		     x, y, false, false);
+	renderSprite(destination, spritex, spritey, spriteWidth, spriteHeight, x, y, false, false);
     }
 
     public void renderSprite(Bitmap destination, int spritex, int spritey, int spriteWidth, int spriteHeight, int x, int y,
